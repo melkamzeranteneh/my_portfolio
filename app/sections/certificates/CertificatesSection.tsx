@@ -1,23 +1,8 @@
+import { fetchCertificates } from "@/app/lib/gdrive";
 import { CertificatesPreview } from "./CertificatesPreview";
 
-const certificates = [
-  {
-    id: "cert-1",
-    name: "Certificate 01",
-    previewUrl: "https://drive.google.com/file/d/FILE_ID_1/preview",
-    thumbnailUrl: null,
-    updatedAt: null,
-  },
-  {
-    id: "cert-2",
-    name: "Certificate 02",
-    previewUrl: "https://drive.google.com/file/d/FILE_ID_2/preview",
-    thumbnailUrl: null,
-    updatedAt: null,
-  },
-];
-
-export function CertificatesSection() {
+export async function CertificatesSection() {
+  const { certificates, error } = await fetchCertificates();
 
   return (
     <section className="w-full px-6 py-20">
@@ -27,9 +12,11 @@ export function CertificatesSection() {
             Certificates
           </h2>
         </div>
-        {certificates.length === 0 ? (
+        {error ? (
+          <p className="text-sm text-rose-300/90">{error}</p>
+        ) : certificates.length === 0 ? (
           <p className="text-sm text-foreground/60">
-            No certificates added yet.
+            No PDF certificates found in your Drive folder yet.
           </p>
         ) : (
           <CertificatesPreview certificates={certificates} />

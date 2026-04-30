@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-type Certificate = {
+export type Certificate = {
   id: string;
   name: string;
   previewUrl: string;
@@ -18,6 +18,41 @@ type CertificatesPreviewProps = {
 export function CertificatesPreview({ certificates }: CertificatesPreviewProps) {
   const [selectedCertificate, setSelectedCertificate] =
     useState<Certificate | null>(null);
+  const [startIndex, setStartIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(3);
+
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      if (window.innerWidth < 768) {
+        setCardsPerView(1);
+        return;
+      }
+
+      if (window.innerWidth < 1024) {
+        setCardsPerView(2);
+        return;
+      }
+
+      setCardsPerView(3);
+    };
+
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  const maxStartIndex = Math.max(0, certificates.length - cardsPerView);
+
+  useEffect(() => {
+    if (startIndex > maxStartIndex) {
+      setStartIndex(maxStartIndex);
+    }
+  }, [maxStartIndex, startIndex]);
+
+  const visibleCertificates = useMemo(
+    () => certificates.slice(startIndex, startIndex + cardsPerView),
+    [certificates, startIndex, cardsPerView]
+  );
 
   useEffect(() => {
     if (!selectedCertificate) {
@@ -36,8 +71,30 @@ export function CertificatesPreview({ certificates }: CertificatesPreviewProps) 
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {certificates.map((cert) => (
+      <div className="mb-4 flex items-center justify-end gap-2">
+        <button
+          type="button"
+          className="rounded-full border border-white/20 px-3 py-1 text-xs text-foreground/80 hover:border-white/40"
+          onClick={() => setStartIndex((index) => Math.max(0, index - 1))}
+          disabled={startIndex === 0}
+          aria-label="Scroll certificates left"
+        >
+          ←
+        </button>
+        <button
+          type="button"
+          className="rounded-full border border-white/20 px-3 py-1 text-xs text-foreground/80 hover:border-white/40"
+          onClick={() =>
+            setStartIndex((index) => Math.min(maxStartIndex, index + 1))
+          }
+          disabled={startIndex >= maxStartIndex}
+          aria-label="Scroll certificates right"
+        >
+          →
+        </button>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {visibleCertificates.map((cert) => (
           <article
             key={cert.id}
             className="rounded-2xl border border-white/10 bg-white/5 p-5 text-foreground"
