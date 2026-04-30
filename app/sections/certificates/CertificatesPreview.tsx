@@ -2,15 +2,22 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { DriveCertificate } from "@/app/lib/gdrive";
+
+type Certificate = {
+  id: string;
+  name: string;
+  previewUrl: string;
+  thumbnailUrl?: string | null;
+  updatedAt?: string | null;
+};
 
 type CertificatesPreviewProps = {
-  certificates: DriveCertificate[];
+  certificates: Certificate[];
 };
 
 export function CertificatesPreview({ certificates }: CertificatesPreviewProps) {
   const [selectedCertificate, setSelectedCertificate] =
-    useState<DriveCertificate | null>(null);
+    useState<Certificate | null>(null);
 
   useEffect(() => {
     if (!selectedCertificate) {
@@ -29,11 +36,11 @@ export function CertificatesPreview({ certificates }: CertificatesPreviewProps) 
 
   return (
     <>
-      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {certificates.map((cert) => (
           <article
             key={cert.id}
-            className="min-w-[260px] snap-start rounded-2xl border border-white/10 bg-white/5 p-5 text-foreground"
+            className="rounded-2xl border border-white/10 bg-white/5 p-5 text-foreground"
           >
             {cert.thumbnailUrl ? (
               <Image
