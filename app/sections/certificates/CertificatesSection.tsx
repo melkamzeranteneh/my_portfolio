@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { fetchCertificates } from "@/app/lib/gdrive";
+import { CertificatesPreview } from "./CertificatesPreview";
 
 export async function CertificatesSection() {
-  const certificates = await fetchCertificates();
+  const { certificates, error } = await fetchCertificates();
 
   return (
     <section className="w-full px-6 py-20">
@@ -15,40 +15,14 @@ export async function CertificatesSection() {
             Drive sync active
           </span>
         </div>
-        {certificates.length === 0 ? (
+        {error ? (
+          <p className="text-sm text-rose-300/90">{error}</p>
+        ) : certificates.length === 0 ? (
           <p className="text-sm text-foreground/60">
-            Add `GOOGLE_API_KEY` to load certificates from Drive.
+            No certificate files found in the configured Drive folder yet.
           </p>
         ) : (
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4">
-            {certificates.map((cert) => (
-              <article
-                key={cert.id}
-                className="min-w-[260px] snap-start rounded-2xl border border-white/10 bg-white/5 p-5 text-foreground"
-              >
-                {cert.thumbnailUrl ? (
-                  <Image
-                    src={cert.thumbnailUrl}
-                    alt={cert.name}
-                    className="h-40 w-full rounded-xl object-cover"
-                    width={320}
-                    height={160}
-                    sizes="(max-width: 768px) 260px, 320px"
-                  />
-                ) : (
-                  <div className="flex h-40 w-full items-center justify-center rounded-xl border border-white/10 text-xs text-foreground/50">
-                    Preview loading
-                  </div>
-                )}
-                <h3 className="mt-4 text-lg font-semibold">{cert.name}</h3>
-                {cert.updatedAt ? (
-                  <p className="mt-2 text-xs text-foreground/60">
-                    Updated {new Date(cert.updatedAt).toLocaleDateString()}
-                  </p>
-                ) : null}
-              </article>
-            ))}
-          </div>
+          <CertificatesPreview certificates={certificates} />
         )}
       </div>
     </section>
