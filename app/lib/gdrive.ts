@@ -62,11 +62,11 @@ export async function fetchCertificates(): Promise<DriveCertificatesResult> {
   let lastError = "Google Drive API request failed.";
 
   for (const variant of requestVariants) {
-    const params = new URLSearchParams({
-      ...variant,
-      fields: "files(id,name,mimeType,thumbnailLink,webViewLink,modifiedTime)",
-      key: apiKey,
-    });
+    const params = new URLSearchParams();
+    Object.entries(variant).forEach(([k, v]) => params.append(k, v));
+    params.append("fields", "files(id,name,mimeType,thumbnailLink,webViewLink,modifiedTime)");
+    params.append("key", apiKey);
+
     const url = `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
     const response = await fetch(url, { cache: "no-store" });
     const data = (await response.json()) as DriveApiResponse;
