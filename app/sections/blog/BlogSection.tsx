@@ -1,54 +1,38 @@
-const posts = [
-  {
-    title: "Designing for speed",
-    excerpt: "How to layer motion and performance without trade-offs.",
-    size: "large",
-  },
-  {
-    title: "Three.js lighting",
-    excerpt: "Creating depth with neon accents.",
-    size: "medium",
-  },
-  {
-    title: "Content pipelines",
-    excerpt: "MDX workflows that feel invisible.",
-    size: "medium",
-  },
-  {
-    title: "Minimal UX",
-    excerpt: "Less UI, more focus.",
-    size: "small",
-  },
-];
+import Link from "next/link";
+import { fetchArticles } from "@/app/lib/mdx";
+import { BlogCards } from "./BlogCards";
 
-export function BlogSection() {
+export async function BlogSection() {
+  const posts = await fetchArticles();
+
   return (
-    <section className="w-full px-6 py-20">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
-        <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-          Writing
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {posts.map((post) => (
-            <article
-              key={post.title}
-              className={`rounded-2xl border border-white/10 bg-white/5 p-6 text-foreground ${
-                post.size === "large"
-                  ? "sm:col-span-2"
-                  : post.size === "small"
-                  ? "sm:col-span-1"
-                  : "sm:col-span-1"
-              }`}
-            >
-              <h3 className="text-lg font-semibold">{post.title}</h3>
-              <p className="mt-3 text-sm text-foreground/70">{post.excerpt}</p>
-              <button className="mt-6 text-sm font-semibold text-accent">
-                Read more
-              </button>
-            </article>
-          ))}
+    <section id="writing" className="w-full px-6 py-24 bg-black">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+        <div className="space-y-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            Field Notes / Writing
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-white uppercase">
+            Technical <span className="text-muted">Journal</span>
+          </h2>
+        </div>
+        {posts.length === 0 ? (
+          <p className="text-[10px] text-muted italic">
+            Synchronizing data streams...
+          </p>
+        ) : (
+          <BlogCards posts={posts} />
+        )}
+        <div className="pt-4">
+          <Link
+            href="/articles"
+            className="game-button px-6 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest transition"
+          >
+            Archive Access
+          </Link>
         </div>
       </div>
     </section>
   );
 }
+

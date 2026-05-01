@@ -1,76 +1,99 @@
+"use client";
+
+import { motion } from "framer-motion";
+
+import { Github, ExternalLink, Code2 } from "lucide-react";
+
 const projects = [
   {
     name: "RAG Assistant",
-    description:
-      "Retrieval-augmented assistant with a clean UX and fast document search.",
+    description: "Vector-search enabled document assistant with optimized UX.",
     repositoryUrl: "https://github.com/melkamzeranteneh/RAG",
+    stack: "Next.js + Pinecone",
     previewUrl: "",
   },
   {
     name: "VineForge",
-    description:
-      "Modern product experience focused on clarity, performance, and strong visuals.",
+    description: "Product infrastructure focused on high-speed visuals and performance.",
     repositoryUrl: "https://github.com/melkamzeranteneh/vinefordge",
+    stack: "React + UI Engineering",
     previewUrl: "",
   },
   {
     name: "BetterPhone",
-    description:
-      "Mobile-first interface experiments with practical component architecture.",
+    description: "Architectural experiments in mobile interface design.",
     repositoryUrl: "https://github.com/melkamzeranteneh/betterphone",
-    previewUrl: "",
+    stack: "Mobile-first Architecture",
+    previewUrl: "https://betterphone.vercel.app/",
   },
 ];
 
 export function ProjectsSection() {
-
   return (
-    <section className="w-full px-6 py-20">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
-        <div className="flex items-center justify-between gap-6">
-          <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            Selected projects
+    <section id="projects" className="w-full px-6 py-24 bg-black">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+        <div className="space-y-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            Selected Builds
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-white uppercase">
+            Engineering <span className="text-muted">Portfolio</span>
           </h2>
         </div>
-        {projects.length === 0 ? (
-          <p className="text-sm text-foreground/60">
-            No projects added yet.
-          </p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-3">
-            {projects.map((project) => (
-              <article
-                key={project.name}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 text-foreground backdrop-blur"
-              >
-                <h3 className="text-lg font-semibold">{project.name}</h3>
-                <p className="mt-3 text-sm text-foreground/70">
-                  {project.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3 text-sm">
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {projects.map((project, index) => (
+            <motion.article
+              key={project.name}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="game-panel group border border-white/5 p-6 rounded-sm flex flex-col hover:border-accent/40 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Code2 className="w-3.5 h-3.5 text-accent/60" />
+                <h3 className="text-sm font-bold tracking-tight text-white group-hover:text-accent transition-colors">
+                  {project.name}
+                </h3>
+              </div>
+              <p className="flex-grow text-[13px] leading-relaxed text-muted">
+                {project.description}
+              </p>
+              <div className="mt-4">
+                <span className="game-badge border-white/10 rounded-xs">
+                  {project.stack}
+                </span>
+              </div>
+              <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/5">
+                <a
+                  className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-accent hover:underline transition"
+                  href={project.repositoryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Github className="w-2.5 h-2.5" />
+                  <span>Source</span>
+                </a>
+                {project.previewUrl ? (
                   <a
-                    className="text-accent"
-                    href={project.repositoryUrl}
+                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted hover:text-white transition"
+                    href={project.previewUrl}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Repository
+                    <span>Demo</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
                   </a>
-                  {project.previewUrl ? (
-                    <a
-                      className="text-foreground/70"
-                      href={project.previewUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Live preview
-                    </a>
-                  ) : null}
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+                ) : (
+                  <span className="text-[9px] uppercase tracking-tighter text-white/10 italic">
+                    Deployment Pending
+                  </span>
+                )}
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

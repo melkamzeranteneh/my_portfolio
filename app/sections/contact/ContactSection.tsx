@@ -1,46 +1,131 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { motion } from "framer-motion";
+
+type SubmitState =
+  | { type: "idle"; message: string }
+  | { type: "loading"; message: string }
+  | { type: "success"; message: string }
+  | { type: "error"; message: string };
+
 export function ContactSection() {
+  const [submitState, setSubmitState] = useState<SubmitState>({
+    type: "idle",
+    message: "",
+  });
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("name") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+    };
+
+    setSubmitState({ type: "loading", message: "Broadcasting..." });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+      if (!response.ok || !result.ok) {
+        setSubmitState({ type: "error", message: result.error ?? "Failed." });
+        return;
+      }
+      form.reset();
+      setSubmitState({ type: "success", message: "Transmission complete." });
+    } catch {
+      setSubmitState({ type: "error", message: "Network error." });
+    }
+  }
+
   return (
-    <section className="w-full px-6 py-20">
-      <div className="mx-auto grid w-full max-w-5xl gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div>
-          <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            Let us build something sharp
-          </h2>
-          <p className="mt-4 text-sm text-foreground/70">
-            Drop a line and I will reply with a proposal, timeline, and next
-            steps.
+    <section id="contact" className="w-full px-6 pb-32 pt-24 bg-black">
+      <div className="mx-auto grid w-full max-w-6xl gap-12 lg:grid-cols-[1fr_1fr]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex flex-col justify-center"
+        >
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            Channel / Contact
           </p>
-          <div className="mt-8 space-y-3 text-sm text-foreground/60">
-            <p>Email: hello@yourdomain.com</p>
-            <p>Location: Remote / Global</p>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-white uppercase">
+            Let&apos;s <span className="text-muted">Connect</span>
+          </h2>
+          <p className="mt-4 max-w-md text-[13px] leading-relaxed text-muted">
+            Ready for technical deployment? Send a brief and I&apos;ll respond with a strategic build direction.
+          </p>
+          <div className="mt-10 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-1 bg-accent/40" />
+              <p className="text-[10px] font-bold tracking-widest text-white uppercase">TG: @Mshabka</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-1 bg-accent/40" />
+              <p className="text-[10px] font-bold tracking-widest text-white uppercase">TEL: 0952005270</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-1 bg-accent/40" />
+              <p className="text-[10px] font-bold tracking-widest text-white uppercase">Remote / Ops</p>
+            </div>
           </div>
-        </div>
-        <form className="rounded-3xl border border-white/10 bg-white/5 p-6">
-          <div className="flex flex-col gap-4">
-            <input
-              className="rounded-2xl border border-white/10 bg-black/60 px-4 py-3 text-sm text-foreground outline-none focus:border-accent"
-              placeholder="Name"
-              name="name"
-            />
-            <input
-              className="rounded-2xl border border-white/10 bg-black/60 px-4 py-3 text-sm text-foreground outline-none focus:border-accent"
-              placeholder="Email"
-              name="email"
-              type="email"
-            />
-            <textarea
-              className="min-h-[120px] rounded-2xl border border-white/10 bg-black/60 px-4 py-3 text-sm text-foreground outline-none focus:border-accent"
-              placeholder="Tell me about your idea"
-              name="message"
-            />
-          </div>
-          <button
-            type="button"
-            className="mt-6 w-full rounded-full bg-accent py-3 text-sm font-semibold text-black shadow-[0_0_24px_rgba(0,255,127,0.35)]"
-          >
-            Send message
-          </button>
-        </form>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="game-panel p-8 rounded-sm border border-white/5"
+        >
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <input
+                className="w-full bg-black/40 border border-white/5 px-4 py-3 text-xs text-white placeholder-white/20 outline-none focus:border-accent rounded-sm transition"
+                placeholder="NAME / ID"
+                name="name"
+                required
+                maxLength={120}
+              />
+              <input
+                className="w-full bg-black/40 border border-white/5 px-4 py-3 text-xs text-white placeholder-white/20 outline-none focus:border-accent rounded-sm transition"
+                placeholder="EMAIL / COORDS"
+                name="email"
+                type="email"
+                required
+              />
+              <textarea
+                className="min-h-[120px] w-full bg-black/40 border border-white/5 px-4 py-3 text-xs text-white placeholder-white/20 outline-none focus:border-accent rounded-sm transition"
+                placeholder="MESSAGE DATA"
+                name="message"
+                required
+                maxLength={5000}
+              />
+            </div>
+            
+            <button
+              type="submit"
+              disabled={submitState.type === "loading"}
+              className="game-button w-full py-3 text-[10px] font-bold uppercase tracking-widest rounded-sm transition"
+            >
+              {submitState.type === "loading" ? "BROADCASTING..." : "TRANSMIT"}
+            </button>
+            
+            {submitState.message && (
+              <p className={`mt-2 text-center text-[9px] font-bold uppercase tracking-widest ${
+                submitState.type === "success" ? "text-accent" : "text-rose-500"
+              }`}>
+                {submitState.message}
+              </p>
+            )}
+          </form>
+        </motion.div>
       </div>
     </section>
   );

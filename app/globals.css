@@ -2,9 +2,10 @@
 
 :root {
   --background: #000000;
-  --foreground: #f5f5f5;
-  --accent: #00ff7f;
-  --muted: #a1a1aa;
+  --foreground: #f0f0f0;
+  --accent: #0dff0d;
+  --muted: #888888;
+  --radius: 6px;
 }
 
 @theme inline {
@@ -14,23 +15,120 @@
   --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-handwritten: var(--font-caveat);
 }
 
 body {
-  background: var(--background);
+  background: #000000;
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-button,
-input,
-textarea {
-  font-family: inherit;
+::selection {
+  background: var(--accent);
+  color: #000000;
+}
+
+/* Simplified Minimalist Components */
+.game-panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.game-card {
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.game-card:hover {
+  border-color: var(--accent);
+}
+
+.game-badge {
+  border: 1px solid rgba(13, 255, 13, 0.2);
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.game-button {
+  background: var(--accent);
+  color: #000000;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.game-button:hover {
+  opacity: 0.9;
+}
+
+.game-button-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.game-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Article Typography Refinement */
+.article-doc {
+  color: #d1d1d1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.article-doc h1,
+.article-doc h2,
+.article-doc h3 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.article-doc h1 { font-size: 1.5rem; }
+.article-doc h2 { font-size: 1.25rem; }
+.article-doc h3 { font-size: 1.1rem; }
+
+.article-doc blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #a1a1a1;
+}
+
+.article-doc code {
+  background: #1a1a1a;
+  padding: 2px 4px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+.article-doc pre {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.article-doc a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-doc h1,
+.article-doc h2,
+.article-doc h3,
+.article-doc h4,
+.article-doc h5,
+.article-doc h6 {
+  scroll-margin-top: 1.25rem;
 }
