@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { Github, ExternalLink, Code2 } from "lucide-react";
+import { Code2, ExternalLink } from "lucide-react";
 
 const projects = [
   {
@@ -72,7 +72,7 @@ export function ProjectsSection() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Github className="w-2.5 h-2.5" />
+                  <Code2 className="w-2.5 h-2.5" />
                   <span>Source</span>
                 </a>
                 {project.previewUrl ? (

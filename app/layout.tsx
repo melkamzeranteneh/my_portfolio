@@ -26,12 +26,12 @@ export const metadata: Metadata = {
   description: "Minimalist, high-performance digital engineering by ULTRA DEV.",
 };
 
-import { Github, Linkedin, Dribbble, Send } from "lucide-react";
+import { Code2, Users, Globe, Send } from "lucide-react";
 
 const socials = [
-  { name: "GitHub", href: "https://github.com/melkamzeranteneh", icon: Github },
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/melkamzer-anteneh-987b2b36a/", icon: Linkedin },
-  { name: "Dribbble", href: "https://dribbble.com/melkamzer", icon: Dribbble },
+  { name: "GitHub", href: "https://github.com/melkamzeranteneh", icon: Code2 },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/melkamzer-anteneh-987b2b36a/", icon: Users },
+  { name: "Dribbble", href: "https://dribbble.com/melkamzer", icon: Globe },
   { name: "Telegram", href: "https://t.me/Mshabka", icon: Send },
 ];
 
