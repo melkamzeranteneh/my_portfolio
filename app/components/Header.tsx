@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-import Image from "next/image";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "Projects", href: "#projects" },
-  { name: "Credentials", href: "#certificates" },
-  { name: "Writing", href: "#writing" },
+  { name: "Home", href: "/" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Credentials", href: "/#certificates" },
+  { name: "Writing", href: "/#writing" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
@@ -33,42 +34,40 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-6">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.a
-            href="#home"
+          <Link
+            href="/"
             className="flex items-center gap-2 group"
           >
             <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-white group-hover:text-accent transition-colors">
               ULTRA DEV
             </span>
-          </motion.a>
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted transition hover:text-accent"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="game-button px-4 py-1.5 text-[10px] uppercase tracking-widest rounded-sm"
             >
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
           <button
-            className="flex flex-col gap-1 md:hidden"
+            className="md:hidden text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <div className={`h-0.5 w-4 bg-white transition-all ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
-            <div className={`h-0.5 w-4 bg-white transition-all ${mobileMenuOpen ? "opacity-0" : ""}`} />
-            <div className={`h-0.5 w-4 bg-white transition-all ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </nav>
       </div>
@@ -84,14 +83,14 @@ export function Header() {
           >
             <div className="flex flex-col gap-6">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
-                  className="text-xs font-bold uppercase tracking-[0.2em] text-white"
+                  className="text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-accent transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </motion.div>

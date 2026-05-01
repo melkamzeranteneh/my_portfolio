@@ -26,10 +26,13 @@ export const metadata: Metadata = {
   description: "Minimalist, high-performance digital engineering by ULTRA DEV.",
 };
 
+import { Github, Linkedin, Dribbble, Send } from "lucide-react";
+
 const socials = [
-  { name: "GitHub", href: "https://github.com/melkamzeranteneh" },
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/melkamzer-anteneh-987b2b36a/" },
-  { name: "Dribbble", href: "https://dribbble.com/melkamzer" },
+  { name: "GitHub", href: "https://github.com/melkamzeranteneh", icon: Github },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/melkamzer-anteneh-987b2b36a/", icon: Linkedin },
+  { name: "Dribbble", href: "https://dribbble.com/melkamzer", icon: Dribbble },
+  { name: "Telegram", href: "https://t.me/Mshabka", icon: Send },
 ];
 
 export default function RootLayout({
@@ -54,13 +57,15 @@ export default function RootLayout({
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-accent transition"
+                  className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-accent transition"
+                  title={social.name}
                 >
-                  {social.name}
+                  <social.icon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{social.name}</span>
                 </a>
               ))}
             </div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted/50">
+            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted/30">
               © 2026 • ULTRA DEV • BUILT FOR PERFORMANCE
             </p>
           </div>

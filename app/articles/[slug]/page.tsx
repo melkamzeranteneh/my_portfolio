@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchArticleBySlug, fetchArticles } from "@/app/lib/mdx";
+import { ArrowLeft, FileCode, Clock, Info, ListTree } from "lucide-react";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -41,16 +42,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <div className="mx-auto w-full max-w-7xl">
         <div className="mb-10 flex flex-wrap items-center justify-between gap-6">
           <Link href="/articles" className="group flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent transition hover:text-white">
-            <span>← Archive</span>
+            <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+            <span>Archive</span>
           </Link>
           <div className="flex items-center gap-4">
             <a
               href={`/assets/articles/${article.meta.slug}.md`}
               target="_blank"
               rel="noreferrer"
-              className="text-[9px] font-bold uppercase tracking-widest text-muted hover:text-accent transition"
+              className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-muted hover:text-accent transition"
             >
-              Markdown
+              <FileCode className="w-2.5 h-2.5" />
+              <span>Markdown</span>
             </a>
             <div className="h-3 w-[1px] bg-white/10" />
             <p className="text-[9px] font-bold uppercase tracking-widest text-accent/60">
@@ -63,7 +66,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="space-y-10">
             <header className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="h-1 w-1 bg-accent" />
+                <Clock className="w-3.5 h-3.5 text-accent" />
                 <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent">
                   {article.meta.readingTime}
                 </p>
@@ -85,9 +88,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <aside className="hidden xl:block">
               <div className="sticky top-32 space-y-6">
                 <div className="game-panel rounded-sm p-6 border border-white/5">
-                  <p className="mb-4 text-[9px] font-bold uppercase tracking-[0.2em] text-accent">
-                    Index
-                  </p>
+                  <div className="flex items-center gap-2 mb-4">
+                    <ListTree className="w-3 h-3 text-accent" />
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent">
+                      Index
+                    </p>
+                  </div>
                   <nav className="space-y-3">
                     {article.headings
                       .filter((heading) => heading.level <= 3)
@@ -107,10 +113,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 </div>
                 
                 <div className="p-6 border border-white/5 rounded-sm">
-                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted">
-                    Information
-                  </p>
-                  <p className="mt-3 text-[9px] font-medium leading-relaxed text-muted/40 uppercase tracking-widest">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Info className="w-3 h-3 text-muted" />
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted">
+                      Info
+                    </p>
+                  </div>
+                  <p className="text-[9px] font-medium leading-relaxed text-muted/40 uppercase tracking-widest">
                     Synchronized documentation node for the current production environment.
                   </p>
                 </div>

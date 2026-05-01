@@ -6,6 +6,8 @@ export const metadata = {
   description: "Technical documentation and engineering insights.",
 };
 
+import { ArrowLeft, Clock, ScrollText } from "lucide-react";
+
 export default async function ArticlesPage() {
   const articles = await fetchArticles();
 
@@ -13,11 +15,15 @@ export default async function ArticlesPage() {
     <main className="min-h-screen bg-black px-6 py-32 text-foreground selection:bg-accent selection:text-black">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-10">
         <Link href="/" className="group flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent transition hover:text-white">
-          <span>← Back</span>
+          <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+          <span>Return</span>
         </Link>
 
         <header className="space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent/60">Archive / Logs</p>
+          <div className="flex items-center gap-2">
+            <ScrollText className="w-3.5 h-3.5 text-accent/60" />
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent/60">Archive / Logs</p>
+          </div>
           <h1 className="text-3xl font-bold tracking-tight text-white uppercase">Technical <span className="text-muted">Journal</span></h1>
           <p className="max-w-xl text-sm text-muted leading-relaxed">
             Notes on engineering, architecture, and performance.
@@ -35,11 +41,14 @@ export default async function ArticlesPage() {
             {articles.map((article) => (
               <article
                 key={article.slug}
-                className="game-panel group rounded-sm p-8 border border-white/5"
+                className="game-panel group rounded-sm p-8 border border-white/5 hover:border-accent/40 transition-colors"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent/60">{article.readingTime}</p>
-                  <div className="h-[1px] w-6 bg-white/5" />
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3 h-3 text-accent/40" />
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent/60">{article.readingTime}</p>
+                  </div>
+                  <div className="h-[1px] w-6 bg-white/10" />
                 </div>
                 <h2 className="text-xl font-bold tracking-tight text-white group-hover:text-accent transition-colors uppercase">
                   {article.title}
